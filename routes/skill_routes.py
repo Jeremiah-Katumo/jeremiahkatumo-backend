@@ -1,5 +1,5 @@
 from fastapi import APIRouter, status, Path, Depends
-from typing import Annotated, Union
+from typing import Annotated, Union, List
 
 from schemas import skill_schemas
 from cruds import skill_cruds
@@ -15,7 +15,7 @@ async def get_skill(db: db_session, skill_id: Annotated[int, Path(gt=0)]):
     skill = skill_cruds.get_skill_by_id(db, skill_id)
     return skill
 
-@router.get("/", response_model=skill_schemas.SkillResponse, status_code=status.HTTP_200_OK)
+@router.get("/", response_model=List[skill_schemas.SkillResponse], status_code=status.HTTP_200_OK)
 async def get_skills(db: db_session, offset: Union[int, None] = 0, limit: Union[Annotated[int, Path(le=20)], None] = 20):
     skills = skill_cruds.get_all_skills(db=db, offset=offset, limit=limit)
     return skills

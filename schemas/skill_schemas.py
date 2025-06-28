@@ -13,7 +13,7 @@ class SkillCreate(SkillBase):
     icon_class: str
     title: str
     
-class SkillResponse(SkillBase):
+class SkillResponse(BaseModel):
     icon_class: str
     title: str
     

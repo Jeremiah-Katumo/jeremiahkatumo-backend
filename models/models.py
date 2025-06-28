@@ -1,8 +1,10 @@
 from datetime import datetime, date
-from sqlalchemy import Column, Integer, String, Boolean, Text, Date, DateTime
+from sqlalchemy import Column, Integer, Boolean, String, Text, Date, DateTime, Enum
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.sql.sqltypes import TIMESTAMP
 from sqlalchemy.sql.expression import text
+
+from schemas import contact_schemas
 
 Base = declarative_base()
 
@@ -99,7 +101,13 @@ class Contact(Base):
     name = Column(String(100), nullable=False)
     email = Column(String(150))
     message = Column(Text)
+    status = Column(
+        Enum(contact_schemas.MessageStatus), 
+        default="pending",
+        nullable=False
+    )
     created_date = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
+    # created_date = Column(Date, default=datetime.utcnow)
     updated_date = Column(Date, nullable=True, default=None)
     created_by = Column(Integer, nullable=True, default=None)
     updated_by = Column(Integer, nullable=True, default=None)

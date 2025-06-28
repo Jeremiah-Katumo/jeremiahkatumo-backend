@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from typing import Union, Annotated
 
 from models import models
-from schemas import interest_schemas
+from schemas import skill_schemas
 
 def get_all_skills(db: Session, offset: Union[int, None] = 0, limit: Union[Annotated[int, Path(le=10)], None] = 10):
     skills = db.query(models.Skill).order_by(models.Skill.created_date).limit(limit).offset(offset).all()
@@ -25,7 +25,7 @@ def get_skill_by_id(db: Session, skill_id: Annotated[int, Path(gt=0)]):
             detail=f"No skill with id {skill_id} found!"
         )
         
-def create_skill(db: Session, skill: interest_schemas.SkillCreate):
+def create_skill(db: Session, skill: skill_schemas.SkillCreate):
     new_skill = skill.dict()
     skill_in_db = db.query(models.Skill).filter(models.Skill.title==skill.title).first()
     if skill_in_db != None:
@@ -42,7 +42,7 @@ def create_skill(db: Session, skill: interest_schemas.SkillCreate):
     
     return db_skill
 
-def update_skill(db: Session, skill_id: Annotated[int, Path(gt=0)], skill: interest_schemas.SkillCreate):
+def update_skill(db: Session, skill_id: Annotated[int, Path(gt=0)], skill: skill_schemas.SkillCreate):
     req_skill = skill.dict()
     updated_skill = db.query(models.Skill).filter(models.Skill.id==skill_id).first()
     if updated_skill is None:

@@ -1,14 +1,16 @@
 from pydantic import BaseModel
+from datetime import date, datetime
+from typing import Union
 
 class InterestBase(BaseModel):
-    id: int
-        
-class InterestCreate(InterestBase):
     icon_class: str
     title: str
     description: str
-    
-class InterestResponse(InterestBase):
+        
+class InterestCreate(InterestBase):
+    pass
+
+class InterestResponse(BaseModel):
     icon_class: str
     title: str
     description: str

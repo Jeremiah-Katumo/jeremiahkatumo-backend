@@ -24,6 +24,7 @@ def get_interest_by_id(db: Session, interest_id: Annotated[int, Path(gt=0)]):
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"No interest with id {interest_id} found!"
         )
+    return interest
         
 def create_interest(db: Session, interest: interest_schemas.InterestCreate):
     new_interest = interest.dict()
@@ -35,7 +36,7 @@ def create_interest(db: Session, interest: interest_schemas.InterestCreate):
         )
         
     new_interest.update({"created_date": date.today()})
-    db_interest = models.Skill(**new_interest)
+    db_interest = models.Interest(**new_interest)
     db.add(db_interest)
     db.commit()
     db.refresh(db_interest)
@@ -66,7 +67,7 @@ def update_interest(db: Session, interest_id: Annotated[int, Path(gt=0)], intere
     return updated_interest
 
 def delete_interest(db: Session, interest_id: Annotated[int, Path(gt=0)]):
-    interest = db.query(models.Skill).filter(models.Skill.id==interest_id).first()
+    interest = db.query(models.Interest).filter(models.Interest.id==interest_id).first()
     if interest is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

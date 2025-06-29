@@ -1,11 +1,17 @@
 from pydantic import BaseModel
 
-class ServiceSchema(BaseModel):
-    id: int
+class ServiceBase(BaseModel):
     category: str
     icon: str
     title: str
 
+class ServiceCreate(ServiceBase):
+    pass
+
+class ServiceResponse(BaseModel):
+    category: str
+    icon: str
+    title: str
+    
     class Config:
-        # orm_mode = True
         from_attributes = True

@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from models import models
 from database import engine
-from routes import skill_routes, interest_routes, contact_routes
+from routes import skill_routes, interest_routes, contact_routes, resume_routes
 
 
 app = FastAPI()
@@ -29,3 +29,4 @@ def home():
 app.include_router(skill_routes.router)
 app.include_router(interest_routes.router)
 app.include_router(contact_routes.router)
+app.include_router(resume_routes.router)

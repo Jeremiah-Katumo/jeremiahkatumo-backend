@@ -1,12 +1,23 @@
 from pydantic import BaseModel
 from datetime import date, datetime
 
-class ResumeSchema(BaseModel):
+class ResumeBase(BaseModel):
     id: int
-    completion_date: date
+    start_year: str
+    completion_year: str
     title: str
     school: str
     description: str
+        
+class ResumeCreate(ResumeBase):
+    pass
 
+class ResumeResponse(BaseModel):
+    start_year: str
+    completion_year: str
+    title: str
+    school: str
+    description: str
+    
     class Config:
         from_attributes = True

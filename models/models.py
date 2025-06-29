@@ -59,7 +59,8 @@ class Resume(Base):
     __tablename__ = 'resumes'
     
     id = Column(Integer, primary_key=True, index=True)
-    completion_date = Column(Date)
+    start_year = Column(String(15))
+    completion_year = Column(String(15))
     title = Column(String(255), nullable=False)
     school = Column(String(255))
     description = Column(Text)

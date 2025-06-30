@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from datetime import datetime, date
 from typing import Union, List
 from enum import Enum
@@ -25,6 +25,26 @@ class ProjectResponse(BaseModel):
     category: str
     link: str
     image_link: str
+    
+    class Config:
+        from_attributes=True
+
+class HireBase(BaseModel):
+    name: str
+    email: EmailStr
+    phone: str
+    subject: str
+    description: str
+    
+class HireCreate(HireBase):
+    pass
+
+class HireResponse(BaseModel):
+    name: str
+    email: EmailStr
+    phone: str
+    subject: str
+    description: str
     
     class Config:
         from_attributes=True

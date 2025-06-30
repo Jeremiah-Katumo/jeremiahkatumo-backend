@@ -26,3 +26,10 @@ def get_project_by_id(project_id: Annotated[int, Path(gt=0)], db: Session) -> mo
             detail=f"No project with id {project_id} found!"
         )
     return project
+
+def hire_me(db: Session, hire: project_schemas.HireCreate):
+    new_hire = models.Hire(**hire.dict())
+    db.add(new_hire)
+    db.commit()
+    db.refresh(new_hire)
+    print(f"Hire saved in db!")

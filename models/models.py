@@ -122,3 +122,12 @@ class Hire(Base):
     __tablename__ = 'hires'
     
     id = Column(Integer, primary_key=True, index= True)
+    name = Column(String(50), nullable=False)
+    email = Column(String(150))
+    phone = Column(String(50), nullable=True)
+    subject = Column(String(50), nullable=False)
+    description = Column(Text)
+    created_date = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
+    updated_date = Column(Date, nullable=True, default=None)
+    created_by = Column(Integer, nullable=True, default=None)
+    updated_by = Column(Integer, nullable=True, default=None)

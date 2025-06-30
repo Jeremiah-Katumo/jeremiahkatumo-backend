@@ -1,14 +1,15 @@
 import smtplib
 from email.mime.text import MIMEText
 from email.message import EmailMessage
-from .config import SMTP_SERVER, SMTP_PORT, EMAIL_USERNAME, EMAIL_PASSWORD, EMAIL_RECEIVER
+from .config import ( SMTP_SERVER, SMTP_PORT, SMTP_USER, SMTP_PASSWORD, SMTP_RECEIVER, 
+                     AFRICASTALKING_API_KEY, AFRICASTALKING_USERNAME )
 import africastalking
 import os
 
 from schemas import project_schemas
 
 # Africa's Talking setup
-africastalking.initialize(username="sandbox", api_key="your_api_key")  # Replace with live credentials
+africastalking.initialize(username=AFRICASTALKING_USERNAME, api_key=AFRICASTALKING_API_KEY)  # Replace with live credentials
 sms = africastalking.SMS
 
 
@@ -27,12 +28,12 @@ def send_contact_email(name: str, email: str, message:str) -> None:
     msg = MIMEText(body)
     msg["Subject"] = subject
     msg['From'] = email
-    msg['To'] = EMAIL_RECEIVER
+    msg['To'] = SMTP_RECEIVER
     
     try:
         with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
             server.starttls()
-            server.login(EMAIL_USERNAME, EMAIL_PASSWORD)
+            server.login(SMTP_USER, SMTP_PASSWORD)
             server.send_message(msg=msg)
     except Exception as e:
         print(f"Error sending email: {e}")
@@ -43,8 +44,8 @@ def send_contact_email(name: str, email: str, message:str) -> None:
 def send_email(hire: project_schemas.HireCreate):
     msg = EmailMessage()
     msg['Subject'] = f"Hire Request: {hire.subject}"
-    msg['From'] = os.getenv("SMTP_USER")  # e.g., 'yourmail@example.com'
-    msg['To'] = os.getenv("SMTP_RECEIVER")  # e.g., 'yourmail@example.com'
+    msg['From'] = SMTP_USER  # e.g., 'yourmail@example.com'
+    msg['To'] = SMTP_RECEIVER  # e.g., 'yourmail@example.com'
     msg.set_content(f"""
     New Hire Request:
 
@@ -58,7 +59,7 @@ def send_email(hire: project_schemas.HireCreate):
     """)
 
     with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
-        smtp.login(os.getenv("SMTP_USER"), os.getenv("SMTP_PASS"))
+        smtp.login(SMTP_USER, SMTP_PASSWORD)
         smtp.send_message(msg)
 
 def send_sms(phone: str, message: str):

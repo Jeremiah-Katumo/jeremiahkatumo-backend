@@ -26,7 +26,7 @@ async def get_project_by_id(db: db_session, project_id: Annotated[int, Path(gt=0
     return project_cruds.get_project_by_id(project_id, db)
 
 
-@router.post("/hires")
+@router.post("/hires", status_code=status.HTTP_201_CREATED)
 def create_hire(hire: project_schemas.HireCreate, db: db_session):
     new_hire = project_cruds.hire_me(db, hire)
 

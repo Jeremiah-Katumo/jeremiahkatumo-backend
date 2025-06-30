@@ -48,7 +48,7 @@ class Blog(Base):
     __tablename__ = 'blogs'
     
     id = Column(Integer, primary_key=True, index=True)
-    published_at = Column(DateTime, default=datetime.utcnow)
+    published_at = Column(DateTime, default=datetime.now(), nullable=True)
     link = Column(Text)
     author = Column(String(100))
     title = Column(String(255))
@@ -116,3 +116,9 @@ class Contact(Base):
     updated_date = Column(Date, nullable=True, default=None)
     created_by = Column(Integer, nullable=True, default=None)
     updated_by = Column(Integer, nullable=True, default=None)
+
+
+class Hire(Base):
+    __tablename__ = 'hires'
+    
+    id = Column(Integer, primary_key=True, index= True)

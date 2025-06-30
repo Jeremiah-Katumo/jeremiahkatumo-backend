@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from schemas import resume_schemas
 from models import models
 
-def get_resumes(db: Session, offset: Union[int, None] = None, limit: Union[Annotated[int, Path(le=20)], None] = None):
+def get_resumes(db: Session, offset: Union[int, None] = 0, limit: Union[Annotated[int, Path(le=20)], None] = 20):
     resumes = db.query(models.Resume).order_by(models.Resume.created_date.desc()).limit(limit).offset(offset).all()
     if resumes == None:
         raise HTTPException(

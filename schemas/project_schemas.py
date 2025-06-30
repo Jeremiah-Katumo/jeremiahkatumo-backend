@@ -1,14 +1,30 @@
 from pydantic import BaseModel
 from datetime import datetime, date
 from typing import Union, List
+from enum import Enum
 
-class ProjectSchema(BaseModel):
+
+class ImageNumber(str, Enum):
+    one = "one"
+    two = "two"
+
+class ProjectBase(BaseModel):
     id: int
-    imageNumber: bool
+    image_number: ImageNumber
     title: str
     category: str
     link: str
-    imageLink: str
+    image_link: str
 
+class ProjectCreate(ProjectBase):
+    pass
+
+class ProjectResponse(BaseModel):
+    image_number: str
+    title: str
+    category: str
+    link: str
+    image_link: str
+    
     class Config:
-        from_attributes = True
+        from_attributes=True

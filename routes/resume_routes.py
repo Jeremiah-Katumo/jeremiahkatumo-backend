@@ -3,6 +3,7 @@ from fastapi.responses import FileResponse
 from typing import List, Annotated, Union
 from sqlalchemy.orm import Session
 import os
+import logging
 
 from schemas import resume_schemas
 from cruds import resume_cruds
@@ -18,6 +19,9 @@ UPLOAD_DIR = "uploads"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 RESUME_PATH = os.path.join(UPLOAD_DIR, "resume.pdf")
+
+# logging.basicConfig(level=logging.INFO)
+# logging.info(f"RESUME_PATH: {RESUME_PATH}")
 
 @router.get('/', response_model=List[resume_schemas.ResumeResponse], status_code=status.HTTP_200_OK)
 async def get_resumes(
@@ -38,7 +42,7 @@ async def get_resume_by_id(db: db_session, resume_id: Annotated[int, Path(gt=0)]
 @router.post("/upload-resume/")
 async def upload_resume(file: UploadFile = File(...)):
     if file.content_type != "application/pdf":
-        raise HTTPException(status_code=400, detail="Only PDF files are allowed.")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Only PDF files are allowed.")
     with open(RESUME_PATH, "wb") as f:
         content = await file.read()
         f.write(content)
@@ -48,5 +52,5 @@ async def upload_resume(file: UploadFile = File(...)):
 @router.get("/download-resume/")
 async def download_resume():
     if not os.path.exists(RESUME_PATH):
-        raise HTTPException(status_code=404, detail="Resume not found.")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Resume not found.")
     return FileResponse(RESUME_PATH, media_type="application/pdf", filename="resume.pdf")

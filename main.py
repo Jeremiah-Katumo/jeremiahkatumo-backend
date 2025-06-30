@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from models import models
 from database import engine
 from routes import ( skill_routes, interest_routes, contact_routes, 
-                    resume_routes, service_routes )
+                    resume_routes, service_routes, project_routes )
 
 
 app = FastAPI()
@@ -32,3 +32,4 @@ app.include_router(interest_routes.router)
 app.include_router(contact_routes.router)
 app.include_router(resume_routes.router)
 app.include_router(service_routes.router)
+app.include_router(project_routes.router)

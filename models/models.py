@@ -4,7 +4,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.sql.sqltypes import TIMESTAMP
 from sqlalchemy.sql.expression import text
 
-from schemas import contact_schemas
+from schemas import contact_schemas, project_schemas
 
 Base = declarative_base()
 
@@ -16,7 +16,11 @@ class Project(Base):
     __tablename__ = 'projects'
     
     id = Column(Integer, primary_key=True, index=True)
-    imageNumber = Column(Boolean)
+    image_number = Column(
+        Enum(project_schemas.ImageNumber),
+        default=project_schemas.ImageNumber.one,
+        nullable=False
+    )
     title = Column(String(255), nullable=False)
     category = Column(String(100))
     link = Column(Text)

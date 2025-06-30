@@ -1,11 +1,14 @@
 from fastapi import HTTPException, status, Path
 from sqlalchemy.orm import Session
-from typing import Optional, List
+from typing import Optional, List, Union, Annotated
 
 from models import models
 
 
-def get_services_by_category(category: str, db: Session, offset: int = 0, limit: int = 3) -> List[models.Service]:
+def get_services_by_category(
+        category: str, db: Session, offset: Union[int, None] = 0, 
+        limit: Union[Annotated[int, Path(le=10)]] = 10
+    ) -> List[models.Service]:
     if category not in ("top", "bottom"):
         raise HTTPException(status_code=400, detail="Category must be 'top' or 'bottom'")
 
@@ -27,7 +30,7 @@ def get_services_by_category(category: str, db: Session, offset: int = 0, limit:
     return services
 
 
-def get_service_by_id(category: str, service_id: int, db: Session) -> models.Service:
+def get_service_by_id(category: str, service_id: Annotated[int, Path(gt=0)], db: Session) -> models.Service:
     if category not in ("top", "bottom"):
         raise HTTPException(status_code=400, detail="Category must be 'top' or 'bottom'")
 
